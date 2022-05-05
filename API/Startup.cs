@@ -26,6 +26,7 @@ namespace API
     public class Startup
     {
         private readonly IConfiguration _config;
+        private readonly static string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration config)
         {
             _config = config;
@@ -37,7 +38,8 @@ namespace API
             services.AddApplicationServices(_config);
             services.AddControllers();
             services.AddCors();
-            services.AddIdentityServices(_config);   
+            services.AddIdentityServices(_config);
+            services.ConfigureCors(_config);
 
             services.AddSwaggerGen(c =>
             {
@@ -59,7 +61,8 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            //app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors("_myAllowSpecificOrigins");
 
             app.UseAuthentication();
 
@@ -67,7 +70,7 @@ namespace API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireCors(MyAllowSpecificOrigins);
             });
         }
     }
