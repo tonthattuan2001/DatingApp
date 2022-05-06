@@ -1,5 +1,11 @@
 import React from "react";
 import './App.css';
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+
+
+  
+  
+
 class App extends React.Component {
    
     // Constructor 
@@ -11,12 +17,14 @@ class App extends React.Component {
             DataisLoaded: false
         };
     }
-   
+    
+    
+
     // ComponentDidMount is used to
     // execute the code 
     componentDidMount() {
         fetch(
-            "https://localhost:44300/api/Users")
+            "https://jsonplaceholder.typicode.com/users")
             .then((res) => res.json())
             .then((json) => {
                 this.setState({
@@ -26,7 +34,8 @@ class App extends React.Component {
             })
     }
     render() {
-        const { DataisLoaded, items } = this.state;
+        var { DataisLoaded, items } = this.state;
+
         if (!DataisLoaded) return <div>
             <h1> Pleses wait some time.... </h1> </div> ;
    
@@ -35,7 +44,7 @@ class App extends React.Component {
             <h1> Fetch data from an api in react </h1>  {
                 items.map((item) => ( 
                 <ol key = { item.id } >
-                    userName: { item.userName }
+                    User Name: { item.name }
                   
                     </ol>
                 ))
